@@ -1,0 +1,24 @@
+.wrapper {
+  width: 100vw;
+  height: 150px;
+  overflow: hidden;
+}
+
+.content {
+  height: 100%;
+  //占位
+  width: 0px;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.scrollItem {
+  flex: 0 0 100vw;
+  height: 100%;
+}
+
+.scrollItemImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
