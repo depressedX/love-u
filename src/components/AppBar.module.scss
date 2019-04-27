@@ -1,0 +1,30 @@
+.container{
+  text-align: center;
+  position: relative;
+  width: 100%;
+  background-image: url("../image/app_bar_bg.jpg");
+  background-size: 100% 100%;
+  padding: .7em 0;
+  color: white;
+}
+.back{
+  background-color: transparent;
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0;
+  border: none;
+  font-size: 0;
+}
+.backIcon{
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+.customAction{
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}

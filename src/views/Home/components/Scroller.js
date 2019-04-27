@@ -12,6 +12,10 @@ export class Scroller extends React.Component {
 
         this.scroller = null
 
+        this.state = {
+            currentPageIndex: 0
+        }
+
     }
 
     componentDidMount() {
@@ -20,18 +24,30 @@ export class Scroller extends React.Component {
 
 
     render() {
+
+        let images = [
+            require('../../../image/r1.jpg'),
+            require('../../../image/r2.jpg'),
+            require('../../../image/r3.jpg'),
+            require('../../../image/r4.jpg')
+        ]
+
         return (
-            <div ref={this.wrapperRef} className={style.wrapper}>
-                <ul ref={this.contentRef} className={style.content}>
-                    <li className={style.scrollItem}><img src={require('../../../images_test/s1m.jpg')} className={style.scrollItemImg}
-                             alt={'scroll'}/></li>
-                    <li className={style.scrollItem}><img src={require('../../../images_test/s2m.jpg')} className={style.scrollItemImg}
-                             alt={'scroll'}/></li>
-                    <li className={style.scrollItem}><img src={require('../../../images_test/s3m.jpg')} className={style.scrollItemImg}
-                             alt={'scroll'}/></li>
-                    <li className={style.scrollItem}><img src={require('../../../images_test/s4m.jpg')} className={style.scrollItemImg}
-                             alt={'scroll'}/></li>
-                </ul>
+            <div className={style.container}>
+                <div ref={this.wrapperRef} className={style.wrapper}>
+                    <ul ref={this.contentRef} className={style.content}>
+                        {images.map(image => (
+                            <li className={style.scrollItem} key={image}>
+                                <img src={image} className={style.scrollItemImg} alt={'scroll'}/>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div className={style.dots}>
+                    {images.map((v, index) => (
+                        <span key={index} className={[style.dot, this.state.currentPageIndex === index ? style.active:''].join(' ')}/>
+                    ))}
+                </div>
             </div>
         );
     }
@@ -55,10 +71,19 @@ export class Scroller extends React.Component {
             },
             momentum: false
         })
+        this.scroller.on('scrollEnd', () => {
+            this.setState({
+                currentPageIndex: this.scroller.getCurrentPage().pageX
+            })
+        })
 
-        setInterval(()=>{
+        this.setState({
+            currentPageIndex: this.scroller.getCurrentPage().pageX
+        })
+
+        setInterval(() => {
             this.scroller.next()
-        },5000)
+        }, 5000)
 
     }
 }

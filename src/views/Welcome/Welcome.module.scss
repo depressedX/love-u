@@ -1,0 +1,35 @@
+.container {
+  background-image: url("../../image/welcome.jpg");
+  background-size: cover;
+  background-position: top center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.enter {
+  display: inline-block;
+  font-size: 20px;
+  color: white;
+  font-family: 华文行楷, serif;
+  background-color: transparent;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, .5) 0%, transparent 30%, transparent 70%, rgba(255, 255, 255, .5) 100%);
+  padding: .5em .75em;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+}
+
+.count {
+  font-size: 24px;
+  color: #8f000b;
+  font-family: 华文行楷, serif;
+  position: absolute;
+  bottom: 1em;
+  text-align: center;
+  width: 100%;
+}
+

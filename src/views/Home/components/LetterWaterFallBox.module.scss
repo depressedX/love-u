@@ -1,0 +1,33 @@
+.container{
+  padding: 10px;
+}
+
+.controllerBox{
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0;
+}
+.controllerButton{
+  border-radius: 8px;
+  width: 160px;
+  font-size: 16px;
+  color: white;
+  background-color: #a5100e;
+  box-shadow: 1px 2px 3px 1px rgba(150,150,150,.5);
+  padding: .5em 0;
+  text-align: center;
+  border: none;
+  &:focus{
+    outline: none;
+  }
+}
+.controllerButtonActive{
+  text-decoration: underline;
+}
+.wrapper{
+  height: 500px;
+  overflow: hidden;
+}
+.content{
+
+}

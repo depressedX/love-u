@@ -1,0 +1,78 @@
+.container {
+  background-color: white;
+  box-shadow: 2px 2px 5px 0px rgba(100, 100, 100, 0.3);
+  padding: 15px 20px;
+  margin-bottom: 15px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.content {
+  white-space: pre-wrap;
+}
+
+.action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+.like {
+  margin-right: 10px;
+  color: #888888;
+  font-size: .875em;
+  &Num {
+    vertical-align: middle;
+    width: 36px;
+    display: inline-block;
+    text-align: center;
+  }
+
+  &Icon {
+    vertical-align: middle;
+    width: 1.4em;
+    height: 1.4em;
+    object-fit: contain;
+  }
+}
+
+.comment {
+  margin-right: 10px;
+  color: #888888;
+  font-size: .875em;
+  &Num {
+    vertical-align: middle;
+    width: 36px;
+    display: inline-block;
+    text-align: center;
+  }
+
+  &Icon {
+    width: 1.4em;
+    height: 1.4em;
+    vertical-align: middle;
+    object-fit: contain;
+  }
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid gray;
+  margin-right: 20px;
+  flex: none;
+}
+.usernameAndTime{
+  flex: auto;
+}
+.username{
+  color: #222222;
+}
+.time{
+  color: #888888;
+  font-size: .875em;
+}

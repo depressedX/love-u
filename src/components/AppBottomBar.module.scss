@@ -1,0 +1,26 @@
+.container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid #bfbfbf;
+  z-index: 999;
+  background-color: white;
+}
+
+.homeIcon, .userIcon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.home, .user {
+  font-size: 0;
+  padding: 8px 20px;
+}
+
+.user {
+
+}
