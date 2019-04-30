@@ -1,0 +1,46 @@
+
+.editIcon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.textareaWrapper {
+  position: relative;
+
+  .textarea {
+    width: 100%;
+    height: 300px;
+    box-sizing: border-box;
+    padding: 1.2em 2em 3em 2em;
+    font-size: 16px;
+    resize: vertical;
+  }
+
+  .controlButtonGroup {
+    position: absolute;
+    right: 1em;
+    bottom: 1em;
+
+    .controlButton {
+      border-radius: 5px;
+      box-shadow: 1px 2px 1px 1px rgba(100, 100, 100, 0.3);
+      border: none;
+      padding: .5em 1em;
+      margin-right: 25px;
+      font-size: inherit;
+      &:hover{
+        box-shadow: none;
+      }
+      &.confirm {
+        color: white;
+        background-color: #a20f0d;
+      }
+
+      &.cancel {
+        color: #888888;
+        background-color: #eaeaea;
+      }
+    }
+  }
+}

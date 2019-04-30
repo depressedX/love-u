@@ -17,7 +17,7 @@ export class Home extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className={style.Home}>
                 <AppBar>{{
                     title: '三行爱国书',
                     customAction:(<Link to={'/editor'} className={style.editLink}>

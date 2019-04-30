@@ -1,33 +1,22 @@
 import * as React from "react";
+import style from './LetterView.module.scss'
+import {AppBar} from "../../components/AppBar";
+import {Link} from "react-router-dom";
+import {AppBottomBar} from "../../components/AppBottomBar";
+import {Letter} from "./components/Letter";
+import {Comments} from "./components/Comments";
+import {Like} from "./components/Like";
 
 
 function Avatar({user = {}}) {
     return (
-        <img src={user.avatarUrl || require('../../image/avatar_default.png')} alt={user.name}/>
-    )
-}
-
-function Comment({user, time, content}) {
-    return (
-        <div>
-            <Avatar {...user}/>
-            <span>{user.username}</span>
-            <span>{time}</span>
-            <p>{content}</p>
+        <div className={style.avatarContainer}>
+            <img className={style.avatarImg} src={user.avatarUrl || require('../../image/avatar_default.png')} alt={user.name}/>
         </div>
     )
 }
 
-function Comments({comments}) {
-    return (
-        <div>
-            <p>共{comments.length}条评论</p>
-            <ul>
-                {comments.map(comment => <li key={comment.id}><Comment {...comment}/></li>)}
-            </ul>
-        </div>
-    )
-}
+
 
 export class LetterView extends React.Component {
 
@@ -36,13 +25,14 @@ export class LetterView extends React.Component {
 
         let id = props.match.params.id
 
-        this.data = {
+        this.state = {
             id,
             user: {
                 username: 'lph',
                 avatarUrl: null
             },
-            content: 'test1\ntest2\ntest3\n',
+            content: '第一行\ntest2\ntest3\n',
+            timestamp:Date.now(),
             comments: [
                 {
                     id: 1,
@@ -50,7 +40,7 @@ export class LetterView extends React.Component {
                         username: 'commentuser1',
                         avatarUrl: null
                     },
-                    time: 1555922467119,
+                    timestamp: 1555922467119,
                     content: '写的不错'
                 },
                 {
@@ -59,7 +49,7 @@ export class LetterView extends React.Component {
                         username: 'commentuser2',
                         avatarUrl: null
                     },
-                    time: 1555922467119,
+                    timestamp: 1555922467119,
                     content: '写的不错'
                 },
             ],
@@ -83,11 +73,23 @@ export class LetterView extends React.Component {
 
     render() {
         return (
-            <div>
-                <Avatar user={{name: 'lph'}}/>
-                <div>{this.data.user.username}</div>
-                <Comments comments={this.data.comments}/>
-                <p>已有{this.data.likes.length}人点赞</p>
+            <div className={style.LetterView}>
+                <AppBar>{{
+                    title: '三行爱国书',
+                    customAction: (<Link to={'/editor'} className={style.editLink}>
+                        <img className={style.editIcon} src={require('../../image/edit.png')} alt={'edit'}/>
+                    </Link>)
+                }}</AppBar>
+                <header className={style.header}>
+                    <Avatar user={{name: 'lph'}}/>
+                    <div className={style.username}>{this.state.user.username}</div>
+                </header>
+                <section style={{padding: '10px 15px'}}>
+                    <Letter content={this.state.content} timestamp={this.state.timestamp}/>
+                    <Comments comments={this.state.comments}/>
+                    <Like likeNum={this.state.likes.length}/>
+                </section>
+                <AppBottomBar/>
             </div>
         );
     }

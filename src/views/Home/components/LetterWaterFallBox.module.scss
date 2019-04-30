@@ -25,9 +25,49 @@
   text-decoration: underline;
 }
 .wrapper{
-  height: 500px;
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 .content{
 
+}
+
+.refreshing{
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  text-align: center;
+  color: #888888;
+  &Icon{
+    width: 30px;
+    margin-right: 30px;
+    vertical-align: middle;
+  }
+}
+.refreshHolding{
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  color: #888888;
+  text-align: center;
+}
+
+
+.pullUp{
+  &Refreshing{
+    text-align: center;
+    color: #888888;
+  }
+  &LoadMore{
+    display: block;
+    text-align: center;
+    color: #888888;
+  }
+  &ReachBottom{
+    text-align: center;
+    color: #888888;
+  }
 }
