@@ -51,7 +51,8 @@
   //transition-duration: .4s;
 
   &.active {
-    width: 6px;
-    height: 6px;
+    //width: 6px;
+    //height: 6px;
+    background-color: #69c5ec;
   }
 }

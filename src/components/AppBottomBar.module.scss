@@ -1,24 +1,28 @@
 .container {
   position: fixed;
-  bottom: 0;
+  bottom: 10px;
   left: 0;
   right: 0;
   display: flex;
-  justify-content: space-around;
-  border-top: 1px solid #bfbfbf;
+  justify-content: center;
+  //border-top: 1px solid #bfbfbf;
   z-index: 999;
-  background-color: white;
 }
 
 .homeIcon, .userIcon {
-  width: 24px;
-  height: 24px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
 .home, .user {
+  margin: 0 50px;
+  width: 24px;
+  height: 24px;
   font-size: 0;
-  padding: 8px 20px;
+  padding: 10px 10px;
+  background-color: rgba(88,199,249,.8);
+  border-radius: 50%;
 }
 
 .user {

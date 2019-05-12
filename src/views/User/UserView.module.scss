@@ -2,10 +2,13 @@
   padding-bottom: 40px;
 }
 .header{
+  background-color: white;
   overflow: hidden;
   height: 150px;
-  background-image: url("../../image/cloud.jpg");
-  background-size: cover;
+  background-image: url("../../image/flower.jpg");
+  background-size: auto 75%;
+  background-position: left 10%;
+  background-repeat: no-repeat;
   text-align: center;
 }
 .avatarContainer{

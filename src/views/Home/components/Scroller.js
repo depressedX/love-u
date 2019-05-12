@@ -26,18 +26,20 @@ export class Scroller extends React.Component {
     render() {
 
         let images = [
-            require('../../../image/r1.jpg'),
-            require('../../../image/r2.jpg'),
-            require('../../../image/r3.jpg'),
-            require('../../../image/r4.jpg')
+            require('../../../image/null.jpg'),
+            require('../../../image/null.jpg'),
+            // require('../../../image/r1.jpg'),
+            // require('../../../image/r2.jpg'),
+            // require('../../../image/r3.jpg'),
+            // require('../../../image/r4.jpg')
         ]
 
         return (
             <div className={style.container}>
                 <div ref={this.wrapperRef} className={style.wrapper}>
                     <ul ref={this.contentRef} className={style.content}>
-                        {images.map(image => (
-                            <li className={style.scrollItem} key={image}>
+                        {images.map((image,index) => (
+                            <li className={style.scrollItem} key={index}>
                                 <img src={image} className={style.scrollItemImg} alt={'scroll'}/>
                             </li>
                         ))}

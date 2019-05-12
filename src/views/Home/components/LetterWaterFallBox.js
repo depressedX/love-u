@@ -118,7 +118,7 @@ class LetterList extends React.Component {
                 <div style={this.state.showRefreshText ? {} : {display: 'none'}}
                      className={style.refreshing}
                      ref={this.refreshingRef}>
-                    <img className={style.refreshingIcon} src={require('../../../image/flag.png')} alt={'refresh'}/>
+                    <img className={style.refreshingIcon} src={require('../../../image/hat.png')} alt={'refresh'}/>
                     正在刷新...
                 </div>
                 <div
