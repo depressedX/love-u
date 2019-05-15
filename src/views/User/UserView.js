@@ -6,6 +6,7 @@ import {AppBottomBar} from "../../components/AppBottomBar";
 import {Letter} from "./components/Letter";
 import {Comments} from "./components/Comments";
 import {Like} from "./components/Like";
+import {getArticleById, getArticlesByUserId, getComments, getUserInfo} from "../../api";
 
 
 function Avatar({user = {}}) {
@@ -23,94 +24,49 @@ export class UserView extends React.Component {
     constructor(props) {
         super(props);
 
-        let id = props.match.params.id
+        let uid = props.match.params.uid
 
         this.state = {
-            id,
+            uid,
             user: {
-                username: 'lph',
+                nickname: '',
                 avatarUrl: null
             },
-            letters:[
-                {
-                    content: '第一行\ntest2\ntest3\n',
-                    timestamp: Date.now(),
-                    comments: [
-                        {
-                            id: 1,
-                            user: {
-                                username: 'commentuser1',
-                                avatarUrl: null
-                            },
-                            timestamp: 1555922467119,
-                            content: '写的不错'
-                        },
-                        {
-                            id: 2,
-                            user: {
-                                username: 'commentuser2',
-                                avatarUrl: null
-                            },
-                            timestamp: 1555922467119,
-                            content: '写的不错'
-                        },
-                    ],
-                    likes: [
-                        {
-                            username: 'commentuser1',
-                            avatarUrl: null
-                        },
-                        {
-                            username: 'commentuser2',
-                            avatarUrl: null
-                        },
-                        {
-                            username: 'commentuser3',
-                            avatarUrl: null
-                        },
-                    ]
-                },
-                {
-                    content: '第一行\ntest2\ntest3\n',
-                    timestamp: Date.now(),
-                    comments: [
-                        {
-                            id: 1,
-                            user: {
-                                username: 'commentuser1',
-                                avatarUrl: null
-                            },
-                            timestamp: 1555922467119,
-                            content: '写的不错'
-                        },
-                        {
-                            id: 2,
-                            user: {
-                                username: 'commentuser2',
-                                avatarUrl: null
-                            },
-                            timestamp: 1555922467119,
-                            content: '写的不错'
-                        },
-                    ],
-                    likes: [
-                        {
-                            username: 'commentuser1',
-                            avatarUrl: null
-                        },
-                        {
-                            username: 'commentuser2',
-                            avatarUrl: null
-                        },
-                        {
-                            username: 'commentuser3',
-                            avatarUrl: null
-                        },
-                    ]
-                },
-            ],
+            letters: [],
 
         }
+
+        this.fetchData()
+    }
+
+
+    async fetchData() {
+        getArticlesByUserId(this.state.uid, 'time', 0, 1000)
+            .then(
+                ([, ...articleList]) => articleList.map(article =>
+
+
+                    getComments(article.article_id).then(([, ...comments]) => {
+
+
+                            this.setState(prev => ({
+                                letters: [...prev.letters, {
+                                    content: article.content,
+                                    time: article.time,
+                                    likes: article.stars,
+                                    comments
+                                }]
+                            }))
+
+                        }
+                    )
+                )
+            )
+        getUserInfo(this.state.uid).then(info => {
+            this.setState({
+                user: info
+            })
+        })
     }
 
 
@@ -125,16 +81,18 @@ export class UserView extends React.Component {
                 }}</AppBar>
                 <header className={style.header}>
                     <Avatar user={{name: 'lph'}}/>
-                    <div className={style.username}>{this.state.user.username}</div>
+                    <div className={style.username}>{this.state.user.nickname}</div>
                 </header>
                 <section style={{padding: '10px 15px'}}>
-                    {this.state.letters.map((letter,i)=>(
+
+                    {this.state.letters.map((letter, i) => (
                         <div className={style.letter} key={i}>
-                            <Letter content={letter.content} timestamp={letter.timestamp}/>
+                            <Letter content={letter.content} timestamp={letter.time}/>
                             <Comments comments={letter.comments}/>
-                            <Like likeNum={letter.likes.length}/>
+                            <Like likeNum={letter.likes}/>
                         </div>
                     ))}
+
                 </section>
                 <AppBottomBar/>
             </div>

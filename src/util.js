@@ -31,7 +31,7 @@ export class PullDownList {
         let lastY = 0
         let hasReachedTop = () => document.documentElement.scrollTop === 0
 
-        scrollDom.addEventListener('touchmove', e => {
+        this.touchmoveListener = e => {
 
             if (this.isPending()) {
                 return
@@ -65,17 +65,18 @@ export class PullDownList {
                 }
             }
             lastY = curY
-        })
+        }
 
-        scrollDom.addEventListener('touchstart', e => {
+        this.touchstartListener = e => {
 
             if (this.isPending()) {
                 return
             }
 
             lastY = e.touches[0].screenY
-        })
-        document.body.addEventListener('touchend', e => {
+        }
+
+        this.touchendListener = e => {
 
             if (this.isPending()) {
                 return
@@ -89,7 +90,12 @@ export class PullDownList {
                     this.state = this.IDLE
                 }
             }
-        })
+        }
+
+        scrollDom.addEventListener('touchmove', this.touchmoveListener)
+
+        scrollDom.addEventListener('touchstart', this.touchstartListener)
+        document.body.addEventListener('touchend', this.touchendListener)
     }
 
     isPulling() {
@@ -113,6 +119,7 @@ export class PullDownList {
         let allowRefreshing = tryRefresh && this.curTranslateY >= this.threshold
 
         function anim() {
+            if (this.destroyed) return;
             let now = Date.now()
             if (!that.isBouncing()) {
                 // 可能被其他动作改变了状态。
@@ -181,6 +188,14 @@ export class PullDownList {
         for (let cb of this.eventCallbacks[eventName]) {
             cb(...params)
         }
+    }
+
+    destroy(){
+        this.destroyed = true
+        this.scrollDom.removeEventListener('touchmove', this.touchmoveListener)
+
+        this.scrollDom.removeEventListener('touchstart', this.touchstartListener)
+        document.body.removeEventListener('touchend', this.touchendListener)
     }
 
 

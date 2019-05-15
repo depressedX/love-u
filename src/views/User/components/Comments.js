@@ -1,25 +1,27 @@
 import * as React from "react";
 import style from "./Comments.module.scss";
+import {getUserInfo} from "../../../api";
 
-function Avatar({user = {}}) {
+function Avatar({avatarUrl,nickname}) {
     return (
-        <img className={style.avatarImg} src={user.avatarUrl || require('../../../image/avatar_default.png')}
-             alt={user.name}/>
+        <img className={style.avatarImg} src={avatarUrl || require('../../../image/avatar_default.png')}
+             alt={nickname}/>
     )
 }
 
-function Comment({user, timestamp, content}) {
+function Comment({user_id, time, content}) {
+    const [user,setUser] = React.useState({})
+    React.useEffect(()=>{
 
-    let date = new Date(timestamp),
-        timeFormatted = `${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
-
+        getUserInfo(user_id).then(info=>setUser(info))
+    },[])
     return (
         <div className={style.comment}>
             <header className={style.commentHeader}>
                 <Avatar {...user}/>
                 <div className={style.usernameAndTime}>
-                    <div className={style.username}>{user.username}</div>
-                    <div className={style.time}>{timeFormatted}</div></div>
+                    <div className={style.username}>{user.nickname}</div>
+                    <div className={style.time}>{time}</div></div>
             </header>
             <p>{content}</p>
         </div>
@@ -31,7 +33,7 @@ export function Comments({comments}) {
         <div>
             <p className={style.commentNum}>共{comments.length}条评论</p>
             <ul>
-                {comments.map(comment => <li key={comment.id}><Comment {...comment}/></li>)}
+                {comments.map((comment,index) => <li key={index}><Comment {...comment}/></li>)}
             </ul>
         </div>
     )

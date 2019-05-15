@@ -6,16 +6,17 @@ import {AppBottomBar} from "../../components/AppBottomBar";
 import {Letter} from "./components/Letter";
 import {Comments} from "./components/Comments";
 import {Like} from "./components/Like";
+import {getArticleById, getArticles, getArticlesByUserId, getComments, getUserInfo} from "../../api";
 
 
 function Avatar({user = {}}) {
     return (
         <div className={style.avatarContainer}>
-            <img className={style.avatarImg} src={user.avatarUrl || require('../../image/avatar_default.png')} alt={user.name}/>
+            <img className={style.avatarImg} src={user.avatarUrl || require('../../image/avatar_default.png')}
+                 alt={user.name}/>
         </div>
     )
 }
-
 
 
 export class LetterView extends React.Component {
@@ -23,51 +24,43 @@ export class LetterView extends React.Component {
     constructor(props) {
         super(props);
 
-        let id = props.match.params.id
+        let uid = props.match.params.uid
+        let articleId = props.match.params.articleId
 
         this.state = {
-            id,
+            articleId,
+            uid,
             user: {
-                username: 'lph',
+                nickname: 'empty',
                 avatarUrl: null
             },
-            content: '第一行\ntest2\ntest3\n',
-            timestamp:Date.now(),
-            comments: [
-                {
-                    id: 1,
-                    user: {
-                        username: 'commentuser1',
-                        avatarUrl: null
-                    },
-                    timestamp: 1555922467119,
-                    content: '写的不错'
-                },
-                {
-                    id: 2,
-                    user: {
-                        username: 'commentuser2',
-                        avatarUrl: null
-                    },
-                    timestamp: 1555922467119,
-                    content: '写的不错'
-                },
-            ],
-            likes: [
-                {
-                    username: 'commentuser1',
-                    avatarUrl: null
-                },
-                {
-                    username: 'commentuser2',
-                    avatarUrl: null
-                },
-                {
-                    username: 'commentuser3',
-                    avatarUrl: null
-                },
-            ]
+            content: '',
+            time: Date.now(),
+            comments: [],
+            likes: 0
         }
+
+        this.fetchData()
+    }
+
+    fetchData() {
+        getArticleById(this.state.articleId).then((article) => {
+            this.setState({
+                content: article.content,
+                time: article.time,
+                likes: article.likes
+            })
+        })
+        getComments(this.state.articleId).then(([, ...comments]) => {
+            this.setState({
+                comments
+            })
+        })
+        getUserInfo(this.state.uid).then(info => {
+            this.setState({
+                user: info
+            })
+        })
     }
 
 
@@ -76,18 +69,18 @@ export class LetterView extends React.Component {
             <div className={style.LetterView}>
                 <AppBar>{{
                     title: '三行爱国书',
-                    customAction: (<Link to={'/editor'} className={style.editLink}>
+                    customAction: (<Link to={`/commentEditor/${this.state.articleId}`} className={style.editLink}>
                         <img className={style.editIcon} src={require('../../image/edit.png')} alt={'edit'}/>
                     </Link>)
                 }}</AppBar>
                 <header className={style.header}>
                     <Avatar user={{name: 'lph'}}/>
-                    <div className={style.username}>{this.state.user.username}</div>
+                    <div className={style.username}>{this.state.user.nickname}</div>
                 </header>
                 <section style={{padding: '10px 15px'}}>
-                    <Letter content={this.state.content} timestamp={this.state.timestamp}/>
+                    <Letter content={this.state.content} timestamp={this.state.time}/>
                     <Comments comments={this.state.comments}/>
-                    <Like likeNum={this.state.likes.length}/>
+                    <Like likeNum={this.state.likes}/>
                 </section>
                 <AppBottomBar/>
             </div>

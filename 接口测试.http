@@ -1,0 +1,56 @@
+# For a quick start check out our HTTP Requests collection (Tools|HTTP Client|Open HTTP Requests Collection).
+#
+# Following HTTP Request Live Templates are available:
+# * 'gtrp' and 'gtr' create a GET request with or without query parameters;
+# * 'ptr' and 'ptrp' create a POST request with a simple or parameter-like body;
+# * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
+POST http://120.78.6.190/may_4th/Article/ArticleSelect
+Content-Type: application/x-www-form-urlencoded
+
+star_or_time=0&offset=0&limit=10&user_id=0
+
+###
+
+POST http://120.78.6.190/may_4th/Article/ArticleSave
+Content-Type: application/x-www-form-urlencoded
+
+#user_id=1&content=汉字
+user_id=1&content=%E6%B1%89%E5%AD%97123
+
+###
+
+
+POST http://120.78.6.190/may_4th/Staring
+Content-Type: application/x-www-form-urlencoded
+
+#user_id=1&content=汉字
+article_id=9&change=1
+
+###
+#获取userInfo
+POST http://120.78.6.190/may_4th/User/UserInfoSelect
+Content-Type: application/x-www-form-urlencoded
+
+user_id=1
+
+###
+#修改用户信息
+POST http://120.78.6.190/may_4th/User/UserInfoSave
+Content-Type: application/x-www-form-urlencoded
+
+user_id=1&sex=0&nickname=刘鹏昊&profile=test
+
+###
+#评论
+POST http://120.78.6.190/may_4th/Comment/CommentSave
+Content-Type: application/x-www-form-urlencoded
+
+article_id=9&user_id=1&content=第4条评论
+###
+#评论
+POST http://120.78.6.190/may_4th/Comment/CommentSelect
+Content-Type: application/x-www-form-urlencoded
+
+article_id=8&limit=50&offset=1
+
+###

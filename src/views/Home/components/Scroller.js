@@ -22,6 +22,10 @@ export class Scroller extends React.Component {
         this.init()
     }
 
+    componentWillUnmount() {
+        this.destroy()
+    }
+
 
     render() {
 
@@ -38,7 +42,7 @@ export class Scroller extends React.Component {
             <div className={style.container}>
                 <div ref={this.wrapperRef} className={style.wrapper}>
                     <ul ref={this.contentRef} className={style.content}>
-                        {images.map((image,index) => (
+                        {images.map((image, index) => (
                             <li className={style.scrollItem} key={index}>
                                 <img src={image} className={style.scrollItemImg} alt={'scroll'}/>
                             </li>
@@ -47,11 +51,16 @@ export class Scroller extends React.Component {
                 </div>
                 <div className={style.dots}>
                     {images.map((v, index) => (
-                        <span key={index} className={[style.dot, this.state.currentPageIndex === index ? style.active:''].join(' ')}/>
+                        <span key={index}
+                              className={[style.dot, this.state.currentPageIndex === index ? style.active : ''].join(' ')}/>
                     ))}
                 </div>
             </div>
         );
+    }
+
+    destroy() {
+        this.scroller && this.scroller.destroy()
     }
 
     init() {

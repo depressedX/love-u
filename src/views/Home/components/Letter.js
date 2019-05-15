@@ -1,6 +1,7 @@
 import * as React from "react";
 import style from './Letter.module.scss'
 import {Link} from "react-router-dom";
+import {useLikeState} from "../../../hooks";
 
 const UpdateLetterInfoContext = React.createContext(() => {
 })
@@ -13,70 +14,56 @@ function Avatar({user}) {
 }
 
 
-function Header({username, timestamp}) {
+function Header({username, timestamp: time}) {
 
-    let date = new Date(timestamp),
-        formattedTime = `${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
 
     return (
         <div className={style.header}>
             <Avatar user={{name: 'lph'}}/>
             <div className={style.usernameAndTime}>
                 <div className={style.username}>{username}</div>
-                <div className={style.time}>{formattedTime}</div>
+                <div className={style.time}>{time}</div>
             </div>
         </div>
     )
 }
 
-class Like extends React.Component {
-    constructor(props) {
-        super(props);
+function Like({hasLiked,updateFunc,likeNum,articleId}) {
 
-        this.handleClick = this.handleClick.bind(this)
-
+    function handleClick() {
+        switchLike()
     }
 
-    handleClick() {
-        if (this.props.hasLiked) {
-            //取消点赞
-            this.props.updateFunc()
-        } else {
-            //点赞
-            this.props.updateFunc()
-        }
-    }
+    let [like,switchLike] = useLikeState(likeNum,hasLiked,articleId)
 
-    render() {
-        return (
-            <a href='javascript:void(0)' onClick={this.handleClick} className={style.like}>
-                {
-                    this.props.hasLiked ?
-                        <img className={style.likeIcon} src={require('../../../image/like_active.png')}
-                             alt={'like'}/> :
-                        <img className={style.likeIcon} src={require('../../../image/like.png')} alt={'like'}/>
-                }
-                <span className={style.likeNum}>{this.props.likeNum}</span>
-            </a>
-        )
-    }
+    return (
+        <a href='javascript:void(0)' onClick={handleClick} className={style.like}>
+            {
+                like.state ?
+                    <img className={style.likeIcon} src={require('../../../image/like_active.png')}
+                         alt={'like'}/> :
+                    <img className={style.likeIcon} src={require('../../../image/like.png')} alt={'like'}/>
+            }
+            <span className={style.likeNum}>{like.num.toString()}</span>
+        </a>
+    )
 }
 
-function Comment({commentNum, id}) {
+function Comment({commentNum, uid, articleId}) {
     return (
-        <Link to={`/letter/${id}`} className={style.comment}>
+        <Link to={`/letter/${uid}/${articleId}`} className={style.comment}>
             <img className={style.commentIcon} src={require('../../../image/comment.png')} alt={'comment'}/>
             <span className={style.commentNum}>{commentNum}</span>
         </Link>
     )
 }
 
-function Action({likeNum, hasLiked, commentNum, id}) {
+function Action({likeNum, hasLiked, commentNum, uid, articleId}) {
     return (
         <div className={style.action}>
-            <Comment commentNum={commentNum} id={id}/>
+            <Comment commentNum={commentNum} uid={uid} articleId={articleId}/>
             <UpdateLetterInfoContext.Consumer>{
-                updateFunc => <Like likeNum={likeNum} hasLiked={hasLiked} updateFunc={updateFunc}/>
+                updateFunc => <Like {...{likeNum,hasLiked,updateFunc,articleId}}/>
             }
             </UpdateLetterInfoContext.Consumer>
         </div>
@@ -90,13 +77,15 @@ export class Letter extends React.Component {
 
         // Letter组件可以接收父组件传来的Letter信息，也可以根据Id自己获取。
         this.state = {
-            id: props.id,
+            uid: props.user_id,
+            articleId: props.article_id,
             content: props.content,
-            timestamp: props.timestamp,
-            username: props.username,
-            likeNum: props.likeNum,
-            commentNum: props.commentNum,
-            hasLiked: props.hasLiked
+            time: props.time,
+            nickname: props.nickname,
+            stars: props.stars,
+            comments: props.comments,
+            hasLiked: props.hasLiked,
+            imgUrl: props.imgUrl
         }
 
         this.updateLetterInfo = this.updateLetterInfo.bind(this)
@@ -108,8 +97,8 @@ export class Letter extends React.Component {
     updateLetterInfo() {
         this.setState(state => ({
             hasLiked: !state.hasLiked,
-            commentNum: state.commentNum + 1,
-            likeNum: state.likeNum + 1
+            comments: state.comments + 1,
+            stars: state.stars + 1
         }))
     }
 
@@ -118,11 +107,12 @@ export class Letter extends React.Component {
         return (
             <UpdateLetterInfoContext.Provider value={this.updateLetterInfo}>
                 <div className={style.container}>
-                    <Header username={this.state.username} timestamp={this.state.timestamp}/>
+                    <Header username={this.state.nickname} time={this.state.time}/>
                     <p className={style.content}>{this.state.content}</p>
-                    <Action likeNum={this.state.likeNum} commentNum={this.state.commentNum}
+                    <Action likeNum={this.state.stars} commentNum={this.state.comments}
                             hasLiked={this.state.hasLiked}
-                            id={this.state.id}/>
+                            uid={this.state.uid}
+                            articleId={this.state.articleId}/>
                 </div>
             </UpdateLetterInfoContext.Provider>
         );

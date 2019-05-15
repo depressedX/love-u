@@ -1,8 +1,8 @@
 import * as React from "react";
 import {AppBar} from "../../components/AppBar";
 import {Link, withRouter} from "react-router-dom";
-import style from "./Editor.module.scss";
-import {addArticle} from "../../api";
+import style from "./CommentEditor.module.scss";
+import {addArticle, addComment} from "../../api";
 
 function ControlButtonGroup({onConfirm, onCancel}) {
     return (
@@ -42,11 +42,11 @@ function SuccessMessage() {
 }
 
 
-export let Editor = withRouter(({history}) => {
+export let CommentEditor = withRouter(({history,match}) => {
 
     async function onConfirm() {
         try {
-            await addArticle(content)
+            await addComment(match.params.articleId,content)
         } catch (e) {
             alert(`发生错误：${e.message}`)
             return
@@ -70,10 +70,10 @@ export let Editor = withRouter(({history}) => {
     return (
         <div>
             <AppBar>{{
-                title: '三行爱国书'
+                title: '发表评论'
             }}</AppBar>
             <div className={style.textareaWrapper}>
-                <textarea className={style.textarea} placeholder={'在此处写下你的三行爱国书'} value={content}
+                <textarea className={style.textarea} placeholder={'在此处写下你的评论'} value={content}
                           onChange={e => setContent(e.target.value)}/>
                 <ControlButtonGroup onCancel={() => history.goBack()} onConfirm={() => setShowConfirmBox(true)}/>
                 {showConfirmBox && <ConfirmBox onConfirm={onConfirm} onCancel={() => setShowConfirmBox(false)}/>}

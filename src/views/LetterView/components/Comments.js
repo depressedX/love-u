@@ -1,5 +1,6 @@
 import * as React from "react";
 import style from "./Comments.module.scss";
+import {getUserInfo} from "../../../api";
 
 function Avatar({user = {}}) {
     return (
@@ -8,18 +9,28 @@ function Avatar({user = {}}) {
     )
 }
 
-function Comment({user, timestamp, content}) {
+function Comment({user_id, time, content}) {
 
-    let date = new Date(timestamp),
-        timeFormatted = `${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+    function useUserInfo(uid) {
+        let [user, setUser] = React.useState({})
+        React.useEffect(() => {
+            getUserInfo(uid).then(res => {
+                setUser(res)
+            })
+        }, [])
+        return user
+    }
+
+    const user = useUserInfo(user_id)
 
     return (
         <div className={style.comment}>
             <header className={style.commentHeader}>
                 <Avatar {...user}/>
                 <div className={style.usernameAndTime}>
-                    <div className={style.username}>{user.username}</div>
-                    <div className={style.time}>{timeFormatted}</div></div>
+                    <div className={style.username}>{user.nickname}</div>
+                    <div className={style.time}>{time}</div>
+                </div>
             </header>
             <p>{content}</p>
         </div>
